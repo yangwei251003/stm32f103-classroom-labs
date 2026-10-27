@@ -1,0 +1,94 @@
+--- classroom/led-key/user/main.c
++++ examples/led-key/main.c
+@@ -1,5 +1,5 @@
+-#include "Device/Include/stm32f10x.h"
+-#include "Delay.h"
++#include "stm32f10x.h"
++#include "delay.h"
+ 
+ //LED初始化 PB5
+ void LED_Init(void)
+@@ -30,6 +30,7 @@
+ 
+ int main(void)
+ {
++	Delay_Init();
+ 	LED_Init();
+ 	KEY_Init();
+ 	
+@@ -42,7 +43,7 @@
+ 			if(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_6) == 0)
+ 			{
+ 				//翻转PB5灯
+-				if(GPIO_ReadOutputDataBit(GPIOB,GPIOB_Pin_5)==1)
++				if(GPIO_ReadOutputDataBit(GPIOB,GPIO_Pin_5)==1)
+ 				{
+ 					GPIO_ResetBits(GPIOB,GPIO_Pin_5);
+ 				}
+--- classroom/oled-digits/user/main.c
++++ examples/oled-digits/main.c
+@@ -1,5 +1,5 @@
+ #include "stm32f10x.h"
+-#include "Delay.h"
++#include "delay.h"
+ 
+ //=====================OLED引脚配置=====================
+ #define OLED_SDA_PIN  GPIO_Pin_7
+@@ -73,7 +73,7 @@
+ void OLED_Write_Cmd(u8 cmd)
+ {
+     OLED_I2C_Start();
+-    OLED_I2C_WriteByte(OLED_ADDR << 1);
++    OLED_I2C_WriteByte(OLED_ADDR);
+     OLED_I2C_WaitAck();
+     OLED_I2C_WriteByte(0x00);
+     OLED_I2C_WaitAck();
+@@ -86,7 +86,7 @@
+ void OLED_Write_Data(u8 dat)
+ {
+     OLED_I2C_Start();
+-    OLED_I2C_WriteByte(OLED_ADDR << 1);
++    OLED_I2C_WriteByte(OLED_ADDR);
+     OLED_I2C_WaitAck();
+     OLED_I2C_WriteByte(0x40);
+     OLED_I2C_WaitAck();
+@@ -170,7 +170,7 @@
+     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+ 
+     GPIO_InitStruct.GPIO_Pin = OLED_SDA_PIN | OLED_SCL_PIN;
+-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
++    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_OD;
+     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+     GPIO_Init(OLED_PORT, &GPIO_InitStruct);
+ 
+--- classroom/oled-digits/user/delay.c
++++ examples/common/delay.c
+@@ -1,5 +1,5 @@
+ #include "stm32f10x.h"
+-#include "Delay.h"
++#include "delay.h"
+ 
+ static uint32_t fac_us = 0;
+ static uint32_t fac_ms = 0;
+@@ -9,6 +9,11 @@
+     SystemCoreClockUpdate();
+     fac_us = SystemCoreClock / 1000000;
+     fac_ms = fac_us * 1000;
++    /* Poll the full 24-bit core-clock counter without interrupts. Hardware timing remains unverified. */
++    SysTick->CTRL = 0;
++    SysTick->LOAD = 0x00ffffffu;
++    SysTick->VAL = 0;
++    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+ }
+ 
+ void Delay_us(uint32_t nus)
+--- classroom/oled-digits/user/delay.h
++++ examples/common/delay.h
+@@ -1,5 +1,7 @@
+ #ifndef __DELAY_H
+ #define __DELAY_H
++
++#include <stdint.h>
+ 
+ void Delay_Init(void);
+ void Delay_ms(uint32_t nms);

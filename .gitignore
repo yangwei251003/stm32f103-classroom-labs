@@ -1,0 +1,14 @@
+external/
+**/build/
+**/Objects/
+**/Listings/
+*.axf
+*.o
+*.hex
+*.bin
+*.map
+*.uvoptx
+*.uvguix.*
+__pycache__/
+.env*
+.runtime/

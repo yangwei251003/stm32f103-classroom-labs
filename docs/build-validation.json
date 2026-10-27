@@ -1,0 +1,133 @@
+{
+  "software_steps": [
+    {
+      "job": "led-key-main",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "led-key-delay",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "led-key-gpio",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "led-key-rcc",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "led-key-system",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "led-key-startup",
+      "tool": "armasm",
+      "exit_code": 0
+    },
+    {
+      "job": "led-key-link",
+      "tool": "armlink",
+      "exit_code": 0
+    },
+    {
+      "job": "oled-digits-main",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "oled-digits-delay",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "oled-digits-gpio",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "oled-digits-rcc",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "oled-digits-system",
+      "tool": "armclang",
+      "exit_code": 0
+    },
+    {
+      "job": "oled-digits-startup",
+      "tool": "armasm",
+      "exit_code": 0
+    },
+    {
+      "job": "oled-digits-link",
+      "tool": "armlink",
+      "exit_code": 0
+    }
+  ],
+  "layouts": [
+    {
+      "lab": "led-key",
+      "regions": [
+        {
+          "name": "LR_1",
+          "base": "0x08000000",
+          "bytes": 1440
+        },
+        {
+          "name": "ER_RO",
+          "base": "0x08000000",
+          "bytes": 1436
+        },
+        {
+          "name": "ER_RW",
+          "base": "0x20000000",
+          "bytes": 4
+        },
+        {
+          "name": "ER_ZI",
+          "base": "0x20000008",
+          "bytes": 1128
+        }
+      ],
+      "rom_bytes": 1440
+    },
+    {
+      "lab": "oled-digits",
+      "regions": [
+        {
+          "name": "LR_1",
+          "base": "0x08000000",
+          "bytes": 2508
+        },
+        {
+          "name": "ER_RO",
+          "base": "0x08000000",
+          "bytes": 2184
+        },
+        {
+          "name": "ER_RW",
+          "base": "0x20000000",
+          "bytes": 324
+        },
+        {
+          "name": "ER_ZI",
+          "base": "0x20000148",
+          "bytes": 1128
+        }
+      ],
+      "rom_bytes": 2284
+    }
+  ],
+  "warnings": [],
+  "sdk_exact_sha_files": 62,
+  "compiler": "Arm Compiler 6.9, actual armclang/armasm/armlink",
+  "hardware_tested": false,
+  "original_classroom_project_built": false
+}
